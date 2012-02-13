@@ -1,0 +1,34 @@
+<script >
+$(function () {
+var data = [
+    {% for p in partidos %}
+		{ label: "{{p.partido__sigla}}",  data: {{p.percent}}},
+    {% endfor %}
+	];
+$.plot($("#default"), data,
+{
+        series: {
+            pie: { 
+                show: true
+            }
+        }
+});
+});
+</script>
+
+<div id="default" class="graph" style="height:200px"></div>
+
+
+---------------------
+
+<div id="tempos" style="height:300px;width:600px"></div>
+<script>
+var d = [
+{% for c in contagem %}
+    [new Date('{{c.data}}'.replace(', midnight', '')).getTime(), {{c.data__count}}],
+{% endfor %}
+    ];
+
+$.plot($("#tempos"), [d], { xaxis: { mode: "time",  } });
+</script>
+

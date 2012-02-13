@@ -1,0 +1,21 @@
+[Fri Feb 03 18:21:27 2012] [error] [client 200.204.202.14] Target WSGI script not found or unable to stat: /var/srv
+[Fri Feb 03 18:21:27 2012] [error] [client 200.204.202.14] Target WSGI script not found or unable to stat: /var/srv
+[Fri Feb 03 18:21:27 2012] [error] [client 200.204.202.14] Target WSGI script not found or unable to stat: /var/srv
+[Fri Feb 03 18:25:53 2012] [error] [client 200.204.202.14] File does not exist: /htdocs
+[Fri Feb 03 18:25:57 2012] [error] [client 200.204.202.14] File does not exist: /htdocs
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] mod_python (pid=20978, interpreter='camaraapp.bradoretumbante.org.br', phase='PythonHandler', handler='django.core.handlers.modpython'): Application error
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] ServerName: 'camaraapp.bradoretumbante.org.br'
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] DocumentRoot: '/htdocs'
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] URI: '/discursos/last/all/'
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] Location: '/'
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] Directory: None
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] Filename: '/htdocs'
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] PathInfo: '/discursos/last/all/'
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] Traceback (most recent call last):
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250]   File "/usr/lib/python2.6/dist-packages/mod_python/importer.py", line 1537, in HandlerDispatch\n    default=default_handler, arg=req, silent=hlist.silent)
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250]   File "/usr/lib/python2.6/dist-packages/mod_python/importer.py", line 1229, in _process_target\n    result = _execute_target(config, req, object, arg)
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250]   File "/usr/lib/python2.6/dist-packages/mod_python/importer.py", line 1128, in _execute_target\n    result = object(arg)
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250]   File "/usr/local/lib/python2.6/dist-packages/Django-1.3.1-py2.6.egg/django/core/handlers/modpython.py", line 212, in handler\n    return ModPythonHandler()(req)
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250]   File "/usr/local/lib/python2.6/dist-packages/Django-1.3.1-py2.6.egg/django/core/handlers/modpython.py", line 204, in __call__\n    req.write(chunk)
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] IOError: Write failed, client closed connection.
+[Fri Feb 03 14:44:07 2012] [error] [client 69.171.242.250] python_handler: Dispatch() returned non-integer.

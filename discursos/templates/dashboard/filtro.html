@@ -191,50 +191,49 @@ $(document).ready(function()
 {% for p in partidos %}
     <tr class="partido name" id="partido_{{p.partido__sigla}}">
         <td style="width:100%">
-        <span class="holder">
-        <a href='/discursos/partido/{{p.partido__sigla}}'>
-        {{p.partido__sigla}}
-        </a>
-        <span class="percent" style="width:{{p.percent}}%"></span>
-        </span>
+        	<span class="holder">
+        		<a href='/discursos/partido/{{p.partido__sigla}}'>
+        			{{p.partido__sigla}}
+        		</a>
+        		<span class="percent" style="width:{{p.percent}}%"></span>
+        	</span>
         </td>
 
         <td style="width:4em">
-        <span class="number"><b>{{p.partido__sigla__count}}</b></span>
+        	<span class="number"><b>{{p.partido__sigla__count}}</b></span>
         </td>
-
     </tr>
 {% endfor %}
-
+</tbody>
 </table>
 </div>
 
 <div id="estados" class="box">
-<table class="tablesorter">
-<thead>
-<tr>
-    <th style="width:100%">Estado</th>
-    <th style="width:4em">Qtd</th>
-</tr>
-</thead>
+	<table class="tablesorter">
+		<thead>
+			<tr>
+    				<th style="width:100%">Estado</th>
+    				<th style="width:4em">Qtd</th>
+			</tr>
+		</thead>
 
-<tbody>
-{% for e in estados %}
-    <tr class="estado name" id="estado_{{e.estado_sigla}}">
-    <td style="width:100%">
-        <span class="holder">
-        <a href='/discursos/estado/{{e.estado__sigla}}'>
-        {{e.estado__sigla}}
-        </a>
-        <span class="percent" style="width:{{e.percent}}%"></span>
-        </span>
-    </td>
-    <td style="width:4em">
-        <span class="number"><b>{{e.estado__sigla__count}}</b></span>
-    </td>
-    </tr>
-{% endfor %}
-</table>
+	<tbody>
+		{% for e in estados %}
+    		<tr class="estado name" id="estado_{{e.estado_sigla}}">
+    			<td style="width:100%">
+        			<span class="holder">
+        				<a href='/discursos/estado/{{e.estado__sigla}}'>
+        					{{e.estado__sigla}}
+        				</a>
+        				<span class="percent" style="width:{{e.percent}}%"></span>
+        			</span>
+    			</td>
+    			<td style="width:4em">
+        			<span class="number"><b>{{e.estado__sigla__count}}</b></span>
+    			</td>
+    		</tr>
+		{% endfor %}
+	</table>
 </div>
 
 

@@ -1,204 +1,291 @@
 <html>
 	<head>
 		<title>Camara App</title>
-			<link rel="stylesheet" type="text/css" href="../../css/estilo.css" />
-			<script language="javascript" type="text/javascript" src="/static/js/jquery.js"></script>
-			<script language="javascript" type="text/javascript" src="/static/js/jquery.flot.js"></script>
-			<script language="javascript" type="text/javascript" src="/static/js/jquery.flot.pie.js"></script>
-			<script language="javascript" type="text/javascript" src="/static/js/jquery.tablesorter.js"></script>
-			<script language="javascript" type="text/javascript" src="/static/js/jquery.jeditable.mini.js"></script>
-	</head>
-	<body>
-		<div id="tempos">
-			<span>
-				<h2>Linha do Tempo - {{periodo.inicio|date:"d/m/Y"}} até {{periodo.fim|date:"d/m/Y"}} - {{total}} discursos</h2>
-			</span>
-			<div id="timeline">
-			</div>
-				<script>
-					function showTooltip(x, y, contents) {
-					    $('<div id="tooltip">' + contents + '</div>').css( {
-						position: 'absolute',
-						display: 'none',
-						top: y + 5,
-						left: x + 5,
-						border: '1px solid #D5EFFF',
-						padding: '2px',
-						'background-color': '#E1F3FA',
-						opacity: 0.80
-					    }).appendTo("body").fadeIn(200);
+<script language="javascript" type="text/javascript" src="/static/js/jquery.js"></script>
+<script language="javascript" type="text/javascript" src="/static/js/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="/static/js/jquery.flot.pie.js"></script>
+<script language="javascript" type="text/javascript" src="/static/js/jquery.tablesorter.js"></script>
+<script language="javascript" type="text/javascript" src="/static/js/jquery.jeditable.mini.js"></script>
+<style>
+body {
+    font-family:Helvetica, Verdana;
+    font-size:0.8em;
+}
 
-					}
+.content {
+    clear:both
+}
 
-					var d = [
-					{% for c in contagem %}
-					    [new Date('{{c.data}}'.replace(', midnight', '')).getTime(), {{c.data__count}}],
-					{% endfor %}
-					    ];
+.box {
+    border: 3px solid #E1F3FA;
+    padding:5px 5px 5px 5px;
+    width:400px;
+    float:left;
+    margin:5px;
+}
 
-					$.plot($("#timeline"), [d], 
-						{ 
-						    xaxis: { mode: "time", },
-						    series: { lines: { show: true }, points: { show: false } },
-						    grid: { hoverable: true, clickable: true }
-						 });
+.box h2 {
+    margin-top:-5px;
+}
 
-					var previousPoint = null;
-					$("#timeline").bind("plothover", function (event, pos, item) {
-					    if (item) {
-						if (previousPoint != item.dataIndex) {
-						    previousPoint = item.dataIndex;
-						    $("#tooltip").remove();
-						    showTooltip(item.pageX, item.pageY, new Date(item.datapoint[0]).toDateString() + '\n' + item.datapoint[1] + ' discursos');
-						}
-					    }
-					    else {
-						$("#tooltip").remove();
-						previousPoint = null;
-						}
-					});
+.name {
+    position:relative;
+    width:100%;
+    border-top: 1px solid #E1F3FA;
+    margin-bottom: 3px;
+}
 
-					$("#timeline").bind("plotclick", function (event, pos, item) {
-					    if (item) {
-						var d = new Date(item.datapoint[0]);
-						var curr_date = d.getDate()+'';
-						if (curr_date < 9) { curr_date = '0' + curr_date; }
-						var curr_month = d.getMonth()+1; //month contado a partir do 0
-						if (curr_month < 9) { curr_month = '0' + curr_month; }
-						var curr_year = d.getFullYear();
-						var item_date = curr_date + "-" + curr_month + "-" + curr_year;
-						$('html, body').animate({
-											scrollTop: $("#" + item_date).offset().top
-										}, 500);
-					    }
-					});
+.tablesorter {
+    width: 100%;
+    font-size:1em;
+    table-layout: fixed;
+}
 
-					$(document).ready(function() 
-					    { 
-						$(".tablesorter").tablesorter(); 
+.tablesorter td {
+    position: relative;
+}
+
+.name a {
+    z-index: 9999;
+    padding: 0 0 0 6px;
+    text-decoration:none;
+    }
+
+.percent {
+    background-color:#E1F3FA;
+    position:absolute;
+    height:100%;
+    left:0;
+    top:0;
+    bottom:0;
+    z-index:-1;
+}
+
+.number {
+    display:block;
+    position:relative;
+    z-index: 9999;
+    padding: 0 0 0 6px;
+    text-decoration:none;
+}
+
+.holder {
+    display:block;
+    position:relative;
+    width:100%;
+}
+
+h3.date {
+    width:5em;
+    border-bottom:1px solid;
+    margin-bottom:3px;
+}
+
+.arena {
+    background-color:#d5efff;
+}
+
+.mdb {
+    background-color:#fffebe;
+}
+</style>
+</head>
+<body>
+<div id="tempos">
+<span>
+	<h2>Linha do Tempo - {{periodo.inicio|date:"d/m/Y"}} até {{periodo.fim|date:"d/m/Y"}} - {{total}} discursos</h2>
+</span>
+<div id="timeline" style="height:300px;width:95%">
+</div>
+<script>
+function showTooltip(x, y, contents) {
+    $('<div id="tooltip">' + contents + '</div>').css( {
+        position: 'absolute',
+        display: 'none',
+        top: y + 5,
+        left: x + 5,
+        border: '1px solid #D5EFFF',
+        padding: '2px',
+        'background-color': '#E1F3FA',
+        opacity: 0.80
+    }).appendTo("body").fadeIn(200);
+
+}
+
+var d = [
+{% for c in contagem %}
+    [new Date('{{c.data}}'.replace(', midnight', '')).getTime(), {{c.data__count}}],
+{% endfor %}
+    ];
+
+$.plot($("#timeline"), [d], 
+        { 
+            xaxis: { mode: "time", },
+            series: { lines: { show: true }, points: { show: false } },
+            grid: { hoverable: true, clickable: true }
+         });
+
+var previousPoint = null;
+$("#timeline").bind("plothover", function (event, pos, item) {
+    if (item) {
+        if (previousPoint != item.dataIndex) {
+            previousPoint = item.dataIndex;
+            $("#tooltip").remove();
+            showTooltip(item.pageX, item.pageY, new Date(item.datapoint[0]).toDateString() + '\n' + item.datapoint[1] + ' discursos');
+        }
+    }
+    else {
+        $("#tooltip").remove();
+        previousPoint = null;
+        }
+});
+
+$("#timeline").bind("plotclick", function (event, pos, item) {
+    if (item) {
+        var d = new Date(item.datapoint[0]);
+        var curr_date = d.getDate()+'';
+        if (curr_date < 9) { curr_date = '0' + curr_date; }
+        var curr_month = d.getMonth()+1; //month contado a partir do 0
+        if (curr_month < 9) { curr_month = '0' + curr_month; }
+        var curr_year = d.getFullYear();
+        var item_date = curr_date + "-" + curr_month + "-" + curr_year;
+        $('html, body').animate({
+						scrollTop: $("#" + item_date).offset().top
+					}, 500);
+    }
+});
+
+$(document).ready(function() 
+    { 
+        $(".tablesorter").tablesorter(); 
 		
-							$('.addtags').editable('{% url dashboard.views.taggeia %}', {
-								type: 'text',
-								id: 'id',
-								name: 'tags',
-								submit: 'save',
-								cancel: 'cancel',
-						    width: 250,
-						    height: 30
-						    
-							});
+		$('.addtags').editable('{% url dashboard.views.taggeia %}', {
+			type: 'text',
+			id: 'id',
+			name: 'tags',
+			submit: 'save',
+			cancel: 'cancel',
+            width: 250,
+            height: 30
+            
+		});
 
-						}); 
-				</script>
-			</div>
-		<div class="content">
-			<div id="partidos" class="box">
-				<table class="tablesorter">
-					<thead>
-					<tr>
-					    <th>Partido</th>
-					    <th>Qtd</th>
-					</tr>
-					</thead>
-					<tbody>
-						{% for p in partidos %}
-							<tr class="partido name" id="partido_{{p.partido__sigla}}">
-								<td>
-									<span class="holder">
-										<a href='/discursos/partido/{{p.partido__sigla}}'>
-											{{p.partido__sigla}}
-										</a>
-										<span class="percent" style="width:{{p.percent}}%"></span>
-									</span>
-								</td>
+	}); 
 
-								<td style="width:4em">
-									<span class="number"><b>{{p.partido__sigla__count}}</b></span>
-								</td>
-						    	</tr>
-						{% endfor %}
-					</tbody>
-				</table>
-			</div>
 
-		<div id="estados" class="box">
-		<table class="tablesorter">
+
+</script>
+</div>
+
+<div class="content">
+<div id="partidos" class="box">
+<table class="tablesorter">
+<thead>
+<tr>
+    <th style="width:100%">Partido</th>
+    <th style="width:4em">Qtd</th>
+</tr>
+</thead>
+
+<tbody>
+{% for p in partidos %}
+    <tr class="partido name" id="partido_{{p.partido__sigla}}">
+        <td style="width:100%">
+        	<span class="holder">
+        		<a href='/discursos/partido/{{p.partido__sigla}}'>
+        			{{p.partido__sigla}}
+        		</a>
+        		<span class="percent" style="width:{{p.percent}}%"></span>
+        	</span>
+        </td>
+
+        <td style="width:4em">
+        	<span class="number"><b>{{p.partido__sigla__count}}</b></span>
+        </td>
+    </tr>
+{% endfor %}
+</table>
+</div>
+
+<div id="estados" class="box">
+	<table class="tablesorter">
 		<thead>
-		<tr>
-		    <th style="width:100%">Estado</th>
-		    <th style="width:4em">Qtd</th>
-		</tr>
+			<tr>
+    				<th style="width:100%">Estado</th>
+    				<th style="width:4em">Qtd</th>
+			</tr>
 		</thead>
 
-		<tbody>
+	<tbody>
 		{% for e in estados %}
-		    <tr class="estado name" id="estado_{{e.estado_sigla}}">
-		    <td style="width:100%">
-			<span class="holder">
-			<a href='/discursos/estado/{{e.estado__sigla}}'>
-			{{e.estado__sigla}}
-			</a>
-			<span class="percent" style="width:{{e.percent}}%"></span>
-			</span>
-		    </td>
-		    <td style="width:4em">
-			<span class="number"><b>{{e.estado__sigla__count}}</b></span>
-		    </td>
-		    </tr>
+    		<tr class="estado name" id="estado_{{e.estado_sigla}}">
+    			<td style="width:100%">
+        			<span class="holder">
+        				<a href='/discursos/estado/{{e.estado__sigla}}'>
+        					{{e.estado__sigla}}
+        				</a>
+        				<span class="percent" style="width:{{e.percent}}%"></span>
+        			</span>
+    			</td>
+    			<td style="width:4em">
+        			<span class="number"><b>{{e.estado__sigla__count}}</b></span>
+    			</td>
+    		</tr>
 		{% endfor %}
-		</table>
-		</div>
+	</table>
+</div>
 
 
-		<div id="oradores" class="box">
-		<table class="tablesorter">
+<div id="oradores" class="box">
+	<table class="tablesorter">
 		<colgroup class="table-orador">
-		<colgroup class="table-partido">
-		<colgroup class="table-qtd">
-		 <thead>
-		   <tr>
-		   <th style="width:100%">Orador</td>
-		   <th style="width:4em">Partido</td>
-		   <th style="width:4em">Qtd</td>
-		</tr>
-		 </thead>
-		<tbody>
-		{% for o in oradores %}
-		    <tr class="orador name" id="orador_{{o.orador}}">
-		    <td style="width:100%">    
-			<span class="holder">
-			<a href='/discursos/orador/{{o.orador}}' title="{{o.partido__sigla}}">
-			{{o.orador__nome}}
-			</a>
-			<span class="percent" style="width:{{o.percent}}%"></span>
-			</span>
-		    </td>
+			<colgroup class="table-partido">
+				<colgroup class="table-qtd">
+ 					<thead>
+   						<tr>
+   							<th style="width:100%">Orador</td>
+   							<th style="width:4em">Partido</td>
+   							<th style="width:4em">Qtd</td>
+						</tr>
+ 					</thead>
+	<tbody>
+	{% for o in oradores %}
+    		<tr class="orador name" id="orador_{{o.orador}}">
+    			<td style="width:100%">    
+        			<span class="holder">
+        				<a href='/discursos/orador/{{o.orador}}' title="{{o.partido__sigla}}">
+        					{{o.orador__nome}}
+        				</a>
+        				<span class="percent" style="width:{{o.percent}}%"></span>
+        			</span>
+    			</td>
 
-		    <td style="width:4em">
-			{{o.partido__sigla}}    
-		    </td>
+    			<td style="width:4em">
+        			{{o.partido__sigla}}    
+    			</td>
+    			
+    			<td style="width:4em">
+        			<span class="number"><b>{{o.orador__nome__count}}</b></spam>
+        		</td>
+    		</tr>
+	{% endfor %}
+</tbody>
+</table>
 
-		    <td style="width:4em">
-			<span class="number"><b>{{o.orador__nome__count}}</b></td>
-		    </tr>
-		{% endfor %}
-		</tbody>
-		</table>
+</div> <!-- fim do .content -->
 
-		</div> <!-- fim do .content -->
+<div id="discursos" style="clear:both">
+	{% for d in discursos %}  
+    		{% ifchanged d.data %}
+    			<h3 id='{{d.data|date:"d-m-Y"}}' class="date">{{d.data|date:"d/m/Y"}}</h3>
+    		{% endifchanged %}
+    		<div id="discurso-{{d.id}}" class="discurso {{d.partido|lower}}">
+    			<p><b>{{d.orador.nome}} - {{d.partido}}:</b> {{d.sumario}} </p>
+    			<p><b>Tags:</b> </b><span id="{{d.id}}" class="addtags">{{d.tags}}</span></p>
+    		</div>
+	{% endfor %}
 
-		<div id="discursos" style="clear:both">
-		{% for d in discursos %}  
-		    {% ifchanged d.data %}
-		    <h3 id='{{d.data|date:"d-m-Y"}}' class="date">{{d.data|date:"d/m/Y"}}</h3>
-		    {% endifchanged %}
-		    <div id="discurso-{{d.id}}" class="discurso {{d.partido|lower}}">
-		    <p><b>{{d.orador.nome}} - {{d.partido}}:</b> {{d.sumario}} </p>
-		    <p><b>Tags:</b> </b><span id="{{d.id}}" class="addtags">{{d.tags}}</span></p>
-		    </div>
-		{% endfor %}
-
-		<b>Total: </b> {{total}}
-		</div>
-		</body>
-		</html>
+<b>Total: </b> {{total}}
+</div>
+</body>
+</html>

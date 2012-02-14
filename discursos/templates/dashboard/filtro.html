@@ -100,25 +100,26 @@
 					    <th>Qtd</th>
 					</tr>
 					</thead>
-						<tbody>
+					<tbody>
 						{% for p in partidos %}
-						    <tr class="partido name" id="partido_{{p.partido__sigla}}">
-							<td>
-							<span class="holder">
-							<a href='/discursos/partido/{{p.partido__sigla}}'>
-							{{p.partido__sigla}}
-							</a>
-							<span class="percent" style="width:{{p.percent}}%"></span>
-							</span>
-							</td>
+							<tr class="partido name" id="partido_{{p.partido__sigla}}">
+								<td>
+									<span class="holder">
+										<a href='/discursos/partido/{{p.partido__sigla}}'>
+											{{p.partido__sigla}}
+										</a>
+										<span class="percent" style="width:{{p.percent}}%"></span>
+									</span>
+								</td>
 
-							<td style="width:4em">
-							<span class="number"><b>{{p.partido__sigla__count}}</b></span>
-							</td>
-						    </tr>
+								<td style="width:4em">
+									<span class="number"><b>{{p.partido__sigla__count}}</b></span>
+								</td>
+						    	</tr>
 						{% endfor %}
+					</tbody>
 				</table>
-				</div>
+			</div>
 
 		<div id="estados" class="box">
 		<table class="tablesorter">

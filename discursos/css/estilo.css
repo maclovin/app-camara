@@ -1,0 +1,68 @@
+body {
+	font-family:Helvetica, Verdana;
+	font-size:0.8em;
+}
+.content {
+	clear:both
+}
+.box {
+	border:3px solid #E1F3FA;
+	padding:5px 5px 5px 5px;
+	width:400px;
+	float:left;
+	margin:5px;
+}
+.box h2 {
+	margin-top:-5px;
+}
+.name {
+	position:relative;
+	width:100%;
+	border-top:1px solid #E1F3FA;
+	margin-bottom:3px;
+}
+.tablesorter {
+	width:100%;
+	font-size:1em;
+	table-layout:fixed;
+}
+.tablesorter td {
+	position:relative;
+}
+.name a {
+	z-index:9999;
+	padding:0 0 0 6px;
+	text-decoration:none;
+    }
+.percent {
+	background-color:#E1F3FA;
+	position:absolute;
+	height:100%;
+	left:0;
+	top:0;
+	bottom:0;
+	z-index:-1;
+}
+.number {
+	display:block;
+	position:relative;
+	z-index:9999;
+	padding:0 0 0 6px;
+	text-decoration:none;
+}
+.holder {
+	display:block;
+	position:relative;
+	width:100%;
+}
+h3.date {
+	width:5em;
+	border-bottom:1px solid;
+	margin-bottom:3px;
+}
+.arena {
+	background-color:#d5efff;
+}
+.mdb {
+	background-color:#fffebe;
+}

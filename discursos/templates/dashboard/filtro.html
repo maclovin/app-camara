@@ -204,7 +204,6 @@ $(document).ready(function()
         </td>
     </tr>
 {% endfor %}
-</tbody>
 </table>
 </div>
 
@@ -238,52 +237,53 @@ $(document).ready(function()
 
 
 <div id="oradores" class="box">
-<table class="tablesorter">
-<colgroup class="table-orador">
-<colgroup class="table-partido">
-<colgroup class="table-qtd">
- <thead>
-   <tr>
-   <th style="width:100%">Orador</td>
-   <th style="width:4em">Partido</td>
-   <th style="width:4em">Qtd</td>
-</tr>
- </thead>
-<tbody>
-{% for o in oradores %}
-    <tr class="orador name" id="orador_{{o.orador}}">
-    <td style="width:100%">    
-        <span class="holder">
-        <a href='/discursos/orador/{{o.orador}}' title="{{o.partido__sigla}}">
-        {{o.orador__nome}}
-        </a>
-        <span class="percent" style="width:{{o.percent}}%"></span>
-        </span>
-    </td>
+	<table class="tablesorter">
+		<colgroup class="table-orador">
+			<colgroup class="table-partido">
+				<colgroup class="table-qtd">
+ 					<thead>
+   						<tr>
+   							<th style="width:100%">Orador</td>
+   							<th style="width:4em">Partido</td>
+   							<th style="width:4em">Qtd</td>
+						</tr>
+ 					</thead>
+	<tbody>
+	{% for o in oradores %}
+    		<tr class="orador name" id="orador_{{o.orador}}">
+    			<td style="width:100%">    
+        			<span class="holder">
+        				<a href='/discursos/orador/{{o.orador}}' title="{{o.partido__sigla}}">
+        					{{o.orador__nome}}
+        				</a>
+        				<span class="percent" style="width:{{o.percent}}%"></span>
+        			</span>
+    			</td>
 
-    <td style="width:4em">
-        {{o.partido__sigla}}    
-    </td>
-
-    <td style="width:4em">
-        <span class="number"><b>{{o.orador__nome__count}}</b></td>
-    </tr>
-{% endfor %}
+    			<td style="width:4em">
+        			{{o.partido__sigla}}    
+    			</td>
+    			
+    			<td style="width:4em">
+        			<span class="number"><b>{{o.orador__nome__count}}</b></spam>
+        		</td>
+    		</tr>
+	{% endfor %}
 </tbody>
 </table>
 
 </div> <!-- fim do .content -->
 
 <div id="discursos" style="clear:both">
-{% for d in discursos %}  
-    {% ifchanged d.data %}
-    <h3 id='{{d.data|date:"d-m-Y"}}' class="date">{{d.data|date:"d/m/Y"}}</h3>
-    {% endifchanged %}
-    <div id="discurso-{{d.id}}" class="discurso {{d.partido|lower}}">
-    <p><b>{{d.orador.nome}} - {{d.partido}}:</b> {{d.sumario}} </p>
-    <p><b>Tags:</b> </b><span id="{{d.id}}" class="addtags">{{d.tags}}</span></p>
-    </div>
-{% endfor %}
+	{% for d in discursos %}  
+    		{% ifchanged d.data %}
+    			<h3 id='{{d.data|date:"d-m-Y"}}' class="date">{{d.data|date:"d/m/Y"}}</h3>
+    		{% endifchanged %}
+    		<div id="discurso-{{d.id}}" class="discurso {{d.partido|lower}}">
+    			<p><b>{{d.orador.nome}} - {{d.partido}}:</b> {{d.sumario}} </p>
+    			<p><b>Tags:</b> </b><span id="{{d.id}}" class="addtags">{{d.tags}}</span></p>
+    		</div>
+	{% endfor %}
 
 <b>Total: </b> {{total}}
 </div>
